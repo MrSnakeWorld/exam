@@ -3,6 +3,4 @@ import api from './api';
 
 export type Channels = 'ipc-example';
 
-contextBridge.exposeInMainWorld('electron', {
-  api,
-});
+contextBridge.exposeInMainWorld('api', { ...api });

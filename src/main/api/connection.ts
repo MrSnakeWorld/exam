@@ -1,22 +1,12 @@
 import mysql from 'mysql2/promise';
 
-const config = {
+export const config = {
   host: 'localhost',
-  user: 'root',
-  password: '',
+  user: 'app',
+  password: 'pass',
   database: 'sobolevExamDB',
 };
 
-export const getConnection = async () => {
-  return mysql.createConnection(config);
-};
+export const getConnection = async () => mysql.createConnection(config);
 
-export const getPool = async () => {
-  return mysql.createPool({
-    connectionLimit: 10,
-    host,
-    user,
-    password,
-    database,
-  });
-};
+export const getPool = async () => mysql.createPool(config);

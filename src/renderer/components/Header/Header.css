@@ -1,0 +1,16 @@
+.header {
+  position: sticky;
+  top: 0px;
+  height: 60px;
+  /* z-index: 0; */
+  background-color: rgba(220, 20, 60, 0.658);
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 18px;
+}
+
+.header__user-avatar > .avatar:hover {
+  cursor: pointer;
+}

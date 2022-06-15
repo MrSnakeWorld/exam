@@ -12,10 +12,13 @@ const apiAction = async <R>(
     dispatch(request());
 
     const res = await call();
-    console.log('another res', { res });
     dispatch(success(res));
+
+    return res;
   } catch (e) {
     dispatch(failure(e));
+
+    return e;
   }
 };
 

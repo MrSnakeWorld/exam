@@ -2,9 +2,7 @@ import { Channels } from 'main/preload';
 
 declare global {
   interface Window {
-    electron: {
-      api: typeof import('../main/api').default;
-    };
+    api: typeof import('../main/api').default;
   }
 }
 

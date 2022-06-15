@@ -1,80 +1,100 @@
-import React from 'react';
 import {
+  Box,
   Button,
-  Center,
   Checkbox,
-  CheckboxGroup,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Heading,
   IconButton,
   Input,
   InputGroup,
   InputRightElement,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   useBoolean,
+  Text,
 } from '@chakra-ui/react';
-import {
-  Field,
-  FieldProps,
-  Form,
-  Formik,
-  FormikProps,
-  FormikProvider,
-  useFormik,
-} from 'formik';
+import { Field, FormikProvider, useFormik } from 'formik';
+import React, { useState } from 'react';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
+import useSize from 'utils/hooks/useSize';
+import { IUser } from 'utils/interfaces/IUser';
+import validateAge from 'utils/validates/validateAge';
+import validateEmail from 'utils/validates/validateEmail';
 import {
   validateFirstName,
   validateLastName,
-} from '../../../../utils/validates/validateName';
-import validateAge from '../../../../utils/validates/validateAge';
-import validateEmail from '../../../../utils/validates/validateEmail';
-import validatePass from '../../../../utils/validates/validatePass';
+} from 'utils/validates/validateName';
+import validatePass from 'utils/validates/validatePass';
 
-export interface IRegistrationValues {
-  firstName: string;
-  lastName: string;
-  age: number;
-  email: string;
-  password: string;
-  isAdmin: boolean;
+interface IInfoProps {
+  user: IUser;
 }
 
-interface IRegistrationProps {
-  setAuth: () => void;
-  onRegistration: (values: IRegistrationValues) => Promise<void>;
+export interface IUpdateValues {
+  firstName?: string;
+  lastName?: string;
+  age?: number;
+  email?: string;
+  password?: string;
+  isAdmin?: unknown;
 }
 
-const Registration = ({ setAuth, onRegistration }: IRegistrationProps) => {
+const Info = ({ user }: IInfoProps) => {
   const [isVisible, { toggle }] = useBoolean(false);
+  const [isChange, setChange] = useState(false);
+  const { isDesktop } = useSize();
 
-  const formik = useFormik({
+  const handleApply = (values: IUpdateValues) => {
+    setChange(false);
+    console.log(values);
+  };
+
+  const formik = useFormik<IUpdateValues>({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      age: 0,
-      email: '',
-      password: '',
+      ...user,
       isAdmin: true,
     },
-    onSubmit: onRegistration,
+    onSubmit: handleApply,
   });
 
+  const handleEdit = () => setChange(true);
+  const handleCancel = () => setChange(false);
+
   return (
-    <FormikProvider value={formik}>
-      <ModalContent>
-        <ModalCloseButton />
-        <ModalHeader>
-          <Heading textAlign="center">Регистрация</Heading>
-        </ModalHeader>
-        <ModalBody>
-          <form onSubmit={formik.handleSubmit}>
+    <Flex className="user__info" justifyContent="space-between">
+      {!isChange ? (
+        <Box className="user__info-content">
+          <Text size={isDesktop ? '4xl' : 'md'}>
+            <b>Имя: </b>
+            {user.firstName}
+          </Text>
+          {user.lastName && (
+            <Text size={isDesktop ? '4xl' : 'md'}>
+              <b>Фамилия: </b>
+              {user.lastName}
+            </Text>
+          )}
+          <Text size={isDesktop ? '4xl' : 'md'}>
+            <b>Возраст: </b>
+            {user.age}
+          </Text>
+          <Text size={isDesktop ? '4xl' : 'md'}>
+            <b>Электронная почта: </b>
+            {user.email}
+          </Text>
+          {user.isAdmin ? (
+            <Text size={isDesktop ? '4xl' : 'md'}>
+              <b> Роль: </b>Администратор
+            </Text>
+          ) : (
+            <Text size={isDesktop ? '4xl' : 'md'}>
+              <b>Роль: </b>Пользователь
+            </Text>
+          )}
+        </Box>
+      ) : (
+        <FormikProvider value={formik}>
+          <form onSubmit={formik.handleSubmit} className="user__info-content">
             <FormControl
               isInvalid={
                 !!(formik.errors.firstName && formik.touched.firstName)
@@ -191,21 +211,34 @@ const Registration = ({ setAuth, onRegistration }: IRegistrationProps) => {
               Администратор
             </Field>
 
-            <Center pt={5}>
-              <Button width="10rem" type="submit" colorScheme="blue">
-                Регистрация
+            <Box className="user__info-buttons" pt={3}>
+              <Button colorScheme="blue" type="submit" borderRadius={15}>
+                Подтвердить
               </Button>
-            </Center>
+              {isChange && (
+                <Button
+                  colorScheme="red"
+                  borderRadius={15}
+                  position="absolute"
+                  right={0}
+                  onClick={handleCancel}
+                >
+                  Отмена
+                </Button>
+              )}
+            </Box>
           </form>
-        </ModalBody>
-        <ModalFooter justifyContent="center">
-          <Button mr={3} variant="link" onClick={setAuth}>
-            Если вы уже зарегистрированы - нажмите сюда
+        </FormikProvider>
+      )}
+      {!isChange && (
+        <Box className="user__info-buttons" pt={3}>
+          <Button colorScheme="blue" borderRadius={15} onClick={handleEdit}>
+            Редактировать
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </FormikProvider>
+        </Box>
+      )}
+    </Flex>
   );
 };
 
-export default Registration;
+export default Info;

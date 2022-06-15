@@ -1,0 +1,198 @@
+.user {
+	padding: 20px 100px;
+}
+
+.user__title {
+	padding-top: 5px;
+	padding-bottom: 20px;
+	position: relative;
+}
+
+.user__back {
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	left: 0px;
+	top: 20px;
+}
+
+.user__back:hover {
+	cursor: pointer;
+	color:rgba(0, 0, 0, 0.700);
+}
+
+.user__grid {
+	grid-template-columns: 250px auto;
+	column-gap: 40px;
+	position: relative;
+
+}
+
+.user__grid-avatar {
+	height: 250px;
+	width: 250px;
+	border-radius: 100%;
+	overflow: hidden;
+}
+
+.user__grid-avatar__change {
+	overflow: hidden;
+	background-color: white;
+	position: relative;
+	bottom: 0px;
+	transition-property: bottom;
+	transition-duration: .3s;
+	transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	height: 150px;
+	width: 250px;
+  border-radius: 0 0 250px 250px;
+}
+
+.user__grid-avatar__image:hover ~ .user__grid-avatar__change,
+.user__grid-avatar__change:hover {
+	bottom: 100px;
+}
+
+.user__grid-avatar__change-label > div > svg {
+	padding-top: 10px;
+	width: 45px;
+	height: 45px;
+}
+
+.user__grid-avatar__change-label:hover {
+	cursor: pointer;
+}
+
+#upload-avatar {
+	display: none;
+}
+
+.user__info {
+	margin-top: 30px;
+}
+
+.user__info-content {
+	width: 100%;
+	margin-right: 50px;
+}
+
+.user__info-buttons {
+	margin-top: 10px;
+	position: relative;
+}
+
+.user__list-container {
+	margin-top: 40px;
+}
+
+.user__list {
+	padding: 20px 50px;
+}
+
+.user__list-header,
+.user__list-divider {
+	margin-bottom: 20px;
+}
+
+.user__list-grid {
+	grid-template-columns: 20% auto 20%;
+}
+
+@media (max-width: 1115px) {
+	.user__grid {
+		grid-template-columns: 150px auto;
+		column-gap: 40px;
+	}
+
+	.user__grid-avatar {
+		height: 150px;
+		width: 150px;
+	}
+
+	.user__grid-avatar__change {
+		height: 100px;
+		width: 150px;
+	}
+
+	.user__grid-avatar__image:hover ~ .user__grid-avatar__change,
+	.user__grid-avatar__change:hover {
+		bottom: 100px;
+	}
+
+	.user__grid-avatar__change-label > div > svg {
+		width: 40px;
+		height: 40px;
+	}
+
+	.user__grid-avatar__change-label > p {
+		font-size: 16px;
+	}
+
+	.user__info {
+		margin-top: 10px;
+	}
+
+	.user__list-grid__stack {
+		visibility: hidden;
+		position: absolute;
+	}
+}
+
+@media (max-width: 900px) {
+	.user {
+		padding: 20px 50px;
+	}
+
+	.user__back {
+		top: 12px;
+	}
+
+	.user__grid {
+		grid-template-columns: none;
+		grid-template-rows: repeat(2, auto);
+	}
+
+	.user__grid-avatar {
+		margin: 0px auto;
+	}
+
+	.user__info-content {
+		width: 100%;
+		margin-right: 0px;
+	}
+
+	.user__list-grid {
+		position: relative;
+		grid-template-columns: none;
+	}
+
+	.user__list-grid__stack {
+		visibility: visible;
+		position: relative;
+	}
+
+	.user__list-grid__key {
+		position: absolute;
+		bottom: 20px;
+	}
+}
+
+@media (max-width: 600px) {
+	.user__info {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.user__info-button {
+		margin: 0px auto;
+	}
+
+	.user__list-grid__stack {
+		margin-bottom: 50px;
+	}
+
+	.user__list-grid__key {
+		bottom: 70px;
+	}
+}

@@ -15,3 +15,6 @@ export const UPDATE_FAILURE = `${domain}/update/failure`;
 export const DELETE_REQUEST = `${domain}/delete/request`;
 export const DELETE_SUCCESS = `${domain}/delete/success`;
 export const DELETE_FAILURE = `${domain}/delete/failure`;
+
+export const LOGIN = `${domain}/login`;
+export const LOGOUT = `${domain}/logout`;

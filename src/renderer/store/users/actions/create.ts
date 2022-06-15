@@ -1,13 +1,18 @@
+import { AppDispatch } from 'renderer/store';
+import apiAction from 'utils/apiAction';
 import { IUser } from '../../../../utils/interfaces/IUser';
-import apiAction from '../../../../utils/apiAction';
 import * as types from '../constants';
-import { AppDispatch } from '../..';
+
+type ICreateUserResponse = IUser[];
+export interface ICreateUserPayload {
+  user: IUser;
+}
 
 const request = () => ({ type: types.CREATE_REQUEST });
 
-const success = (user: IUser) => ({
+const success = (users: ICreateUserResponse) => ({
   type: types.CREATE_SUCCESS,
-  payload: { user },
+  payload: { user: users[0] } as ICreateUserPayload,
 });
 
 const failure = (err: Error) => ({
@@ -22,10 +27,17 @@ export const createUser = (dispatch: AppDispatch, user: IUser) =>
     (req) => success(req),
     failure,
     () => {
-      const { firstName, lastName, age, email, password } = user;
-      const fields = ['firstName', 'lastName', 'age', 'email', 'password'];
-      const values = [firstName, lastName, age, email, password];
+      const { firstName, lastName, age, email, password, isAdmin } = user;
+      const fields = [
+        'firstName',
+        'lastName',
+        'age',
+        'email',
+        'password',
+        'isAdmin',
+      ];
+      const values = [firstName, lastName, age, email, password, isAdmin];
 
-      return window.electron.api.create(fields, values);
+      return window.api.create('users', fields, values);
     }
   );

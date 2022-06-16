@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, ModalOverlay } from '@chakra-ui/react';
 import Login, { ILoginValues } from './components/Login';
 import Registration, { IRegistrationValues } from './components/Registration';

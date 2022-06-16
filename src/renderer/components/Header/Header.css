@@ -3,7 +3,7 @@
   top: 0px;
   height: 60px;
   /* z-index: 0; */
-  background-color: rgba(220, 20, 60, 0.658);
+  background-color: #C62E3E;
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -13,4 +13,12 @@
 
 .header__user-avatar > .avatar:hover {
   cursor: pointer;
+}
+
+.header__reload-icon {
+  color: white;
+}
+
+.header__reload:hover > .header__reload-icon {
+  color: gray;
 }

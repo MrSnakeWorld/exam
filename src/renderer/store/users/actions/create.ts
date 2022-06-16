@@ -1,5 +1,5 @@
-import { AppDispatch } from 'renderer/store';
-import apiAction from 'utils/apiAction';
+import { AppDispatch } from '../../../store';
+import apiAction from '../../../../utils/apiAction';
 import { IUser } from '../../../../utils/interfaces/IUser';
 import * as types from '../constants';
 

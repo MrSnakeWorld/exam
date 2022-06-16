@@ -1,3 +1,4 @@
+
 .user {
 	padding: 20px 100px;
 }
@@ -13,7 +14,6 @@
 	height: 32px;
 	position: absolute;
 	left: 0px;
-	top: 20px;
 }
 
 .user__back:hover {

@@ -1,8 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { IUser } from '../../../utils/interfaces/IUser';
 import { ICreateUserPayload } from './actions/create';
+import { IDeleteUserPayload } from './actions/delete';
 import { ILoginUserPayload } from './actions/login';
 import { IReadUsersPayload } from './actions/read';
+import { IUpdateUserPayload } from './actions/update';
 import * as types from './constants';
 
 export interface IUsersState {
@@ -46,6 +48,29 @@ const usersReducer = createReducer<IUsersState>(getInitialState(), {
 
     state.byId = byId;
     state.allIds = allIds;
+  },
+  [types.UPDATE_SUCCESS]: (
+    state,
+    { payload }: { payload: IUpdateUserPayload }
+  ) => {
+    const { user } = payload;
+
+    if (state.allIds.includes(user.id) && state.byId[user.id]) {
+      state.byId[user.id] = user;
+    }
+
+    if (state.currentUser && state.currentUser.id === user.id) {
+      state.currentUser = user;
+    }
+  },
+  [types.DELETE_SUCCESS]: (
+    state,
+    { payload }: { payload: IDeleteUserPayload }
+  ) => {
+    const { id } = payload;
+
+    state.allIds = state.allIds.filter((val) => val !== id);
+    delete state.byId[id];
   },
   [types.LOGIN]: (state, { payload }: { payload: ILoginUserPayload }) => {
     const { user } = payload;

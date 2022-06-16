@@ -1,9 +1,6 @@
-import React from 'react';
 import {
   Button,
   Center,
-  Checkbox,
-  CheckboxGroup,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -19,15 +16,7 @@ import {
   ModalHeader,
   useBoolean,
 } from '@chakra-ui/react';
-import {
-  Field,
-  FieldProps,
-  Form,
-  Formik,
-  FormikProps,
-  FormikProvider,
-  useFormik,
-} from 'formik';
+import { Field, FormikProvider, useFormik } from 'formik';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
 import {
   validateFirstName,
@@ -43,7 +32,6 @@ export interface IRegistrationValues {
   age: number;
   email: string;
   password: string;
-  isAdmin: boolean;
 }
 
 interface IRegistrationProps {
@@ -61,7 +49,6 @@ const Registration = ({ setAuth, onRegistration }: IRegistrationProps) => {
       age: 0,
       email: '',
       password: '',
-      isAdmin: true,
     },
     onSubmit: onRegistration,
   });
@@ -91,7 +78,7 @@ const Registration = ({ setAuth, onRegistration }: IRegistrationProps) => {
                 validate={validateFirstName}
               />
               <FormErrorMessage>
-                (<>{formik.errors.lastName}</>)
+                (<>{formik.errors.firstName}</>)
               </FormErrorMessage>
             </FormControl>
 
@@ -181,15 +168,6 @@ const Registration = ({ setAuth, onRegistration }: IRegistrationProps) => {
                 (<>{formik.errors.password}</>)
               </FormErrorMessage>
             </FormControl>
-
-            <Field
-              id="isAdmin"
-              name="isAdmin"
-              as={Checkbox}
-              value={formik.values.isAdmin}
-            >
-              Администратор
-            </Field>
 
             <Center pt={5}>
               <Button width="10rem" type="submit" colorScheme="blue">

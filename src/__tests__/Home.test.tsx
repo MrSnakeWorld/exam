@@ -1,9 +1,8 @@
 import '@testing-library/jest-dom';
-import { render } from '@testing-library/react';
-import Home from 'renderer/pages/Home/Home';
+import Home from '../renderer/pages/Home/Home';
 
 describe('Home', () => {
-  it('should render', () => {
-    expect(render(<Home />)).toBeTruthy();
+  it('Страница должна загрузиться', () => {
+    expect(<Home />).toBeTruthy();
   });
 });

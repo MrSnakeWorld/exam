@@ -1,18 +1,42 @@
-import React, { useEffect } from 'react';
-import readUsers from 'renderer/store/users/actions/read';
-import useAppDispatch from 'utils/hooks/useAppDispatch';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import {
+  getTypesAsArray,
+  getTypesData,
+} from '../../store/products/selectors';
+import { getProductsAsArray } from '../../store/types/selectors';
+import { getCurrentUser } from '../../store/users/selectors';
+import useAppSelector from '../../../utils/hooks/useAppSelector';
+import Products from './components/Products';
+import Types from './components/Types';
 import './Home.css';
 
 const Home = () => {
-  const dispatch = useAppDispatch();
+  const user = useAppSelector(getCurrentUser);
+  const products = useAppSelector(getProductsAsArray);
+  const types = useAppSelector(getTypesAsArray);
+  const typesData = useAppSelector(getTypesData);
 
-  useEffect(() => {
-    (async () => {
-      await readUsers(dispatch);
-    })();
-  }, [dispatch]);
-
-  return <div />;
+  return (
+    <Tabs isFitted variant="enclosed-colored">
+      <TabList>
+        <Tab>Товары</Tab>
+        <Tab>Категории</Tab>
+      </TabList>
+      <TabPanels>
+        <TabPanel>
+          <Products
+            types={types}
+            products={products}
+            typesData={typesData}
+            user={user}
+          />
+        </TabPanel>
+        <TabPanel>
+          <Types types={types} user={user} />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
+  );
 };
 
 export default Home;

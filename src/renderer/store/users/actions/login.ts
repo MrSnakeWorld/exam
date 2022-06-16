@@ -1,4 +1,4 @@
-import { IUser } from 'utils/interfaces/IUser';
+import { IUser } from '../../../../utils/interfaces/IUser';
 import * as types from '../constants';
 
 export interface ILoginUserPayload {

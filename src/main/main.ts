@@ -1,13 +1,5 @@
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
-/**
- * This module executes inside of electron's main process. You can start
- * electron renderer process from here and communicate with the other processes
- * through IPC.
- *
- * When running `npm run build` or `npm run build:main`, this file is compiled to
- * `./src/main.js` using webpack. This gives us some performance wins.
- */
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
@@ -25,10 +17,28 @@ export default class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+ipcMain.on('closeWindow', async () => {
+  if (!mainWindow) {
+    return;
+  }
+
+  mainWindow.close();
+});
+
+ipcMain.on('hideWindow', async () => {
+  if (!mainWindow) {
+    return;
+  }
+
+  mainWindow.minimize();
+});
+
+ipcMain.on('fullscreenWindow', async () => {
+  if (!mainWindow) {
+    return;
+  }
+
+  mainWindow.setFullScreen(!mainWindow.isFullScreen());
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -69,11 +79,16 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
+  const icon = getAssetPath('icon.png');
+
   mainWindow = new BrowserWindow({
+    frame: false,
+    resizable: false,
     show: false,
     width: 1024,
     height: 728,
-    icon: getAssetPath('icon.png'),
+    icon,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')

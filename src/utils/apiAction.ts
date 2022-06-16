@@ -12,6 +12,7 @@ const apiAction = async <R>(
     dispatch(request());
 
     const res = await call();
+    console.log({ res });
     dispatch(success(res));
 
     return res;

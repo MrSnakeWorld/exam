@@ -8,11 +8,10 @@ import {
   MenuItemOption,
   MenuList,
 } from '@chakra-ui/react';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import logoutUser from 'renderer/store/users/actions/logout';
-import useAppDispatch from 'utils/hooks/useAppDispatch';
-import useSize from 'utils/hooks/useSize';
+import logoutUser from '../../../store/users/actions/logout';
+import useAppDispatch from '../../../../utils/hooks/useAppDispatch';
+import useSize from '../../../../utils/hooks/useSize';
 import { IUser } from '../../../../utils/interfaces/IUser';
 
 interface IUserAvatarProps {
@@ -26,13 +25,19 @@ const UserAvatar = ({ user }: IUserAvatarProps) => {
   const navigate = useNavigate();
 
   const handleProfile = () => navigate('/profile');
-
+  const handleUsers = () => navigate('/users');
   const handleLogout = () => dispatch(logoutUser());
 
   return (
     <Box className="header__user-avatar" display="flex" alignItems="center">
       <Menu closeOnBlur closeOnSelect autoSelect={false}>
-        <MenuButton as={Avatar} name={name} className="avatar" />
+        <MenuButton
+          as={Avatar}
+          name={name}
+          className="avatar"
+          color="GrayText"
+          bgColor="white"
+        />
         <MenuList>
           <MenuGroup
             title={isDesktop ? '' : name}
@@ -40,6 +45,11 @@ const UserAvatar = ({ user }: IUserAvatarProps) => {
             fontSize="xl"
           >
             <MenuItemOption onClick={handleProfile}>Профиль</MenuItemOption>
+            {user.isAdmin ? (
+              <MenuItemOption onClick={handleUsers}>
+                Пользователи
+              </MenuItemOption>
+            ) : null}
             <MenuItemOption onClick={handleLogout}>Выйти</MenuItemOption>
           </MenuGroup>
         </MenuList>

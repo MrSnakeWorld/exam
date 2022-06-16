@@ -1,7 +1,8 @@
-import { Button, IconButton } from '@chakra-ui/react';
+import { IconButton } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import { AiOutlineReload } from 'react-icons/ai';
 import { IUser } from '../../../utils/interfaces/IUser';
+import Cart from './components/Cart';
 import EnterMenu from './components/EnterMenu';
 import UserAvatar from './components/UserAvatar';
 import './Header.css';
@@ -27,9 +28,20 @@ const Header = ({ load, user, onOpen, setAuth }: IHeaderProps) => {
           <EnterMenu onOpen={onOpen} setAuth={setAuth} />
         )}
       </div>
-      <IconButton aria-label="Reload" onClick={handleReload} variant="outline">
-        <AiOutlineReload />
-      </IconButton>
+      {user ? (
+        user?.isAdmin ? (
+          <IconButton
+            className="header__reload"
+            aria-label="Reload"
+            onClick={handleReload}
+            variant="outline"
+          >
+            <AiOutlineReload className="header__reload-icon" />
+          </IconButton>
+        ) : (
+          <Cart user={user} />
+        )
+      ) : null}
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Checkbox,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -14,45 +13,51 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Field, FormikProvider, useFormik } from 'formik';
-import React, { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { HiEye, HiEyeOff } from 'react-icons/hi';
-import useSize from 'utils/hooks/useSize';
-import { IUser } from 'utils/interfaces/IUser';
-import validateAge from 'utils/validates/validateAge';
-import validateEmail from 'utils/validates/validateEmail';
+import { updateUser } from '../../../store/users/actions/update';
+import useAppDispatch from '../../../../utils/hooks/useAppDispatch';
+import useSize from '../../../../utils/hooks/useSize';
+import { IUser } from '../../../../utils/interfaces/IUser';
+import validateAge from '../../../../utils/validates/validateAge';
+import validateEmail from '../../../../utils/validates/validateEmail';
 import {
   validateFirstName,
   validateLastName,
-} from 'utils/validates/validateName';
-import validatePass from 'utils/validates/validatePass';
+} from '../../../../utils/validates/validateName';
+import validatePass from '../../../../utils/validates/validatePass';
 
 interface IInfoProps {
   user: IUser;
 }
 
 export interface IUpdateValues {
-  firstName?: string;
+  firstName: string;
   lastName?: string;
-  age?: number;
-  email?: string;
-  password?: string;
-  isAdmin?: unknown;
+  age: number;
+  email: string;
+  password: string;
 }
 
 const Info = ({ user }: IInfoProps) => {
   const [isVisible, { toggle }] = useBoolean(false);
   const [isChange, setChange] = useState(false);
   const { isDesktop } = useSize();
+  const dispatch = useAppDispatch();
 
-  const handleApply = (values: IUpdateValues) => {
+  const handleApply = useCallback(async (values: IUpdateValues) => {
     setChange(false);
-    console.log(values);
-  };
+
+    const newUser: IUser = {
+      ...values,
+      id: user.id,
+    };
+    await updateUser(dispatch, newUser);
+  }, []);
 
   const formik = useFormik<IUpdateValues>({
     initialValues: {
       ...user,
-      isAdmin: true,
     },
     onSubmit: handleApply,
   });
@@ -201,15 +206,6 @@ const Info = ({ user }: IInfoProps) => {
                 (<>{formik.errors.password}</>)
               </FormErrorMessage>
             </FormControl>
-
-            <Field
-              id="isAdmin"
-              name="isAdmin"
-              as={Checkbox}
-              value={formik.values.isAdmin}
-            >
-              Администратор
-            </Field>
 
             <Box className="user__info-buttons" pt={3}>
               <Button colorScheme="blue" type="submit" borderRadius={15}>

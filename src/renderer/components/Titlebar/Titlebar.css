@@ -1,0 +1,37 @@
+.titlebar {
+  background-color: #C62E3E;
+  height: 28px;
+  z-index: 1;
+  -webkit-app-region: drag;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-right: none;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  width: 980px;
+}
+
+.titlebar-buttons {
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-left: none;
+  height: 28px;
+  position: absolute;
+  background-color: #C62E3E;
+  color: white;
+  right: 0;
+  z-index: 10;
+}
+
+.titlebar-button {
+  height: 26px;
+  z-index: 10;
+  padding: 0px 3px;
+}
+
+.titlebar-button:hover {
+  background-color: #dadada56;
+}
+
+.titlebar-button:active {
+  background-color: #ffffffa1;
+}

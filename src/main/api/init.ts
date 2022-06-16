@@ -1,16 +1,17 @@
 import mysql from 'mysql2/promise';
 import { config } from './connection';
 
-const primaryConfig = {
+export const primaryConfig = {
   host: config.host,
   user: 'root',
   password: '',
 };
 
-const secondaryConfig = {
+export const secondaryConfig = {
   host: config.host,
-  user: primaryConfig.user,
   database: config.database,
+  user: primaryConfig.user,
+  password: primaryConfig.password,
 };
 
 const queries = [
@@ -26,26 +27,32 @@ const queries = [
 		);
 	`,
   `
+    CREATE TABLE IF NOT EXISTS types (
+      id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+      name VARCHAR(30) NOT NULL,
+      description TEXT
+    );
+  `,
+  `
 		CREATE TABLE IF NOT EXISTS products (
 			id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
 			name VARCHAR(30) NOT NULL,
 			description TEXT,
 			price FLOAT(12, 2) NOT NULL,
-			typeId INT
+			typeId INT,
+      CONSTRAINT products_types_fk FOREIGN KEY(typeId) REFERENCES types(id)
 		);
 	`,
   `
-		CREATE TABLE IF NOT EXISTS types (
-			id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-			name VARCHAR(30) NOT NULL,
-			description TEXT
-		);
-	`,
-  `
-		ALTER TABLE IF NOT EXISTS products
-		ADD CONSTRAINT products_types_fk
-		FOREIGN KEY(typeId) REFERENCES types(id);
-	`,
+    CREATE TABLE IF NOT EXISTS orders (
+      id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+      userId INT NOT NULL,
+      productId INT NOT NULL,
+      orderDate DATETIME NOT NULL,
+      CONSTRAINT orders_users_fk FOREIGN KEY(userId) REFERENCES users(id),
+      CONSTRAINT order_products_fk FOREIGN KEY(productId) REFERENCES products(id)
+    );
+  `,
 ];
 
 const getPrimaryConnection = async () => mysql.createConnection(primaryConfig);
@@ -63,11 +70,11 @@ const init = async () => {
   const secondaryConnection = await getSecondaryConnection();
 
   try {
-    const [users] = await primaryConnection.query(
+    const [databaseUsers] = await primaryConnection.query(
       `SELECT User FROM mysql.user WHERE User = '${config.user}';`
     );
 
-    if (Array.isArray(users) && !users.length) {
+    if (Array.isArray(databaseUsers) && !databaseUsers.length) {
       const { host, password, database, user } = config;
       await primaryConnection.execute(
         `CREATE USER '${user}'@'${host}' IDENTIFIED BY '${password}';`

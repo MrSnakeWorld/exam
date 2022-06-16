@@ -9,17 +9,22 @@ const update = async (
   const connection = await getConnection();
 
   const updateQuery = `UPDATE ${tableName} SET ${fields
-    .map((val, i) => `${val} = ${values[i]}`)
-    .join(', ')} WHERE id = ${id}`;
+    .map((val, i) => `${val} = '${values[i]}'`)
+    .join(', ')} WHERE id = '${id}'`;
+
+  const readQuery = `SELECT * FROM ${tableName} WHERE id = '${id}'`;
 
   try {
     const updateRes = await connection.execute(updateQuery);
+    const readRes = await connection.execute(readQuery);
     connection.end();
 
-    return updateRes[0];
+    console.log({ updateRes, readRes });
+
+    return readRes[0];
   } catch (error) {
     connection.end();
-    return { error, updateQuery };
+    return { error, updateQuery, readQuery };
   }
 };
 

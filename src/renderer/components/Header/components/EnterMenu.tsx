@@ -1,5 +1,5 @@
 import React from 'react';
-import useSize from 'utils/hooks/useSize';
+import useSize from '../../../../utils/hooks/useSize';
 import {
   Text,
   Link,
@@ -43,7 +43,7 @@ const EnterMenu = ({ onOpen, setAuth }: IEnterMenuProps) => {
       <MenuButton
         as={IconButton}
         aria-label="Options"
-        icon={<FiMenu />}
+        icon={<FiMenu className="header__user-login__icon" />}
         variant="outline"
         className="header__user-login"
       />

@@ -1,5 +1,5 @@
 import { useDisclosure, useToast } from '@chakra-ui/react';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { loginUser } from '../../store/users/actions/login';
 import AuthModal from './AuthModal';
 import { ILoginValues } from './components/Login';
@@ -47,7 +47,7 @@ const useAuthModal = (auth: 'login' | 'registration' = 'login') => {
 
   const handleRegistration = useCallback(
     async (values: IRegistrationValues) => {
-      const { firstName, lastName, email, age, password, isAdmin } = values;
+      const { firstName, lastName, email, age, password } = values;
 
       const user: IUser = {
         id: Math.random() * new Date().valueOf(),
@@ -56,7 +56,6 @@ const useAuthModal = (auth: 'login' | 'registration' = 'login') => {
         age,
         email,
         password,
-        isAdmin: isAdmin ? 1 : 0,
       };
 
       if (users.find((item) => item.email === email)) {
@@ -68,8 +67,6 @@ const useAuthModal = (auth: 'login' | 'registration' = 'login') => {
         });
         return;
       }
-
-      console.log({ user });
 
       const res = await createUser(dispatch, user);
       if (Array.isArray(res)) {

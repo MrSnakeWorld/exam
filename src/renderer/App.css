@@ -1,3 +1,16 @@
 .chakra-avatar__initials {
   width: 100%;
 }
+
+* {
+  font-family: sans-serif;
+}
+
+.app {
+  height: calc(100vh - 40px);
+  overflow: auto;
+}
+
+body {
+  overflow: hidden;
+}
